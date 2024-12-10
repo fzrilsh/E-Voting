@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('vote_schedules', function (Blueprint $table) {
             $table->id();
-            $table->morphs('profile');
-            $table->enum('role', ['user', 'admin']);
+            $table->string('title');
+            $table->text('description');
+            $table->json('candidates_ids');
+            $table->dateTime('start');
+            $table->dateTime('end');
 
-            $table->foreign('profile_id')->references('id')->on('users');
+            $table->softDeletes();
         });
     }
 
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('vote_schedules');
     }
 };

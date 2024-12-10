@@ -6,13 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Profile extends Model
 {
+    public $timestamps = false;
+
     protected $fillable = [
         'profile_type',
         'profile_id',
-        'role'
+        'role',
     ];
 
-    public function profile(){
+    public function profile()
+    {
         return $this->morphTo();
     }
 }
