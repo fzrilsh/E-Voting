@@ -41,9 +41,9 @@ class Login extends Component
         }
 
         if (auth('web')->user()->profile->role === 'admin') {
-            return $this->flash('success', 'Login berhasil, selamat datang kembali admin!', [], '/admin');
+            return $this->flash('success', 'Login berhasil, selamat datang kembali admin!', [], route('admin.dashboard'));
         }
 
-        return $this->flash('success', 'Login berhasil, selamat datang kembali '.auth('web')->user()->name, [], '/');
+        return $this->flash('success', 'Login berhasil, selamat datang kembali '.auth('web')->user()->name, [], route('dashboard'));
     }
 }

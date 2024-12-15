@@ -14,6 +14,7 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         $admin = User::query()->create([
+            'nim' => '1111111111',
             'name' => 'E-Voting Admin',
             'nickname' => 'admin',
             'password' => Hash::make('admin123__@@'),
