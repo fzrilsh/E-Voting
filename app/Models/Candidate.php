@@ -7,22 +7,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Candidate extends Model
 {
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'name',
         'photo',
         'serial_number_id',
-        'partner_id',
     ];
+
+    protected $appends = ['serial_number'];
 
     public function SerialNumber(): BelongsTo
     {
         return $this->belongsTo(SerialNumber::class);
     }
 
-    public function Partner(): BelongsTo
+    public function getSerialNumberAttribute()
     {
-        return $this->belongsTo(Candidate::class);
+        return $this->SerialNumber()->first();
     }
 }

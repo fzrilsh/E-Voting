@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('photo');
             $table->foreignId('serial_number_id')->nullable()->constrained('serial_numbers');
-            $table->foreignId('partner_id')->nullable()->constrained('candidates');
             $table->timestamps();
         });
     }

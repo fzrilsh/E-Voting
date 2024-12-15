@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('visions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('serial_number_id')->constrained('serial_numbers');
-            $table->string('text');
+            $table->text('text');
         });
     }
 

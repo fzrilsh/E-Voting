@@ -16,9 +16,12 @@ class User extends Authenticatable
     public $timestamps = true;
 
     protected $fillable = [
+        'nim',
         'name',
-        'username',
+        'nickname',
         'password',
+        'gender',
+        'birth_date',
     ];
 
     public function profile(): MorphOne

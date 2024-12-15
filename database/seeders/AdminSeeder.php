@@ -15,8 +15,7 @@ class AdminSeeder extends Seeder
     {
         $admin = User::query()->create([
             'name' => 'E-Voting Admin',
-            'username' => 'admin',
-            'email' => 'admin@e-voting.com',
+            'nickname' => 'admin',
             'password' => Hash::make('admin123__@@'),
         ]);
 

@@ -15,6 +15,8 @@ class SerialNumber extends Model
         'text',
     ];
 
+    protected $appends = ['candidates', 'vision', 'mission'];
+
     public function Candidates(): HasMany
     {
         return $this->hasMany(Candidate::class);
@@ -28,5 +30,20 @@ class SerialNumber extends Model
     public function Mission(): HasOne
     {
         return $this->hasOne(Mission::class);
+    }
+
+    public function getCandidatesAttribute()
+    {
+        return $this->Candidates()->get();
+    }
+
+    public function getVisionAttribute()
+    {
+        return $this->Vision()->get();
+    }
+
+    public function getMissionAttribute()
+    {
+        return $this->Mission()->get();
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->morphs('profile');
             $table->enum('role', ['user', 'admin']);
 
-            $table->foreign('profile_id')->references('id')->on('users');
+            $table->foreign('profile_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
