@@ -37,7 +37,7 @@ class Dashboard extends Component
 
     public function updatedSelectedSchedule($scheduleId)
     {
-        $schedule = VoteSchedule::withTrashed()->query()->find($scheduleId);
+        $schedule = VoteSchedule::withTrashed()->find($scheduleId);
         if ($schedule) {
             $this->voteLabels = $schedule->participants->pluck('serial_number.text')->toArray();
             $this->voteData = collect($this->voteLabels)->map(function ($v) use ($schedule) {
