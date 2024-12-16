@@ -1,4 +1,4 @@
-<main class="mt-20 max-sm:mt-10 w-full">
+<main class="mt-20 w-full">
     <section class="flex px-5 py-20 max-md:flex-col-reverse justify-between items-center mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="flex flex-1 max-w-xl flex-col">
             <p class="text-lg font-bold text-red-telkom tracking-wider mb-3">E-Voting</p>

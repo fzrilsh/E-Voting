@@ -1,14 +1,16 @@
-@if (!$schedule)
-    
-@else
-    <main class="mt-20 max-sm:mt-10 w-full">
-        <section class="bg-gray-100 flex px-2 py-10 flex-col items-center w-full">
-            <div class="flex flex-col items-center">
-                <p class="text-base font-bold text-red-telkom tracking-wider">E-Voting</p>
-                <h1 class="text-3xl font-bold font-inria-sans text-gray-900 leading-tight">Quick Count</h1>
-            </div>
-        </section>
+<main class="mt-20 w-full">
+    <section class="bg-gray-100 flex px-2 py-10 flex-col items-center w-full">
+        <div class="flex flex-col items-center">
+            <p class="text-base font-bold text-red-telkom tracking-wider">E-Voting</p>
+            <h1 class="text-3xl font-bold font-inria-sans text-gray-900 leading-tight">Quick Count</h1>
+        </div>
+    </section>
 
+    @if (!$schedule)
+        <section class="px-5 sm:px-6 lg:px-8 mx-auto max-w-7xl flex flex-col w-full h-60 justify-center items-center mt-10 mb-10">
+            <h1 class="text-[20px] shadow-lg px-10 py-5">Belum ada kandidat yang didaftarkan</h1>
+        </section>
+    @else
         <section class="px-5 sm:px-6 lg:px-8 mx-auto max-w-7xl flex flex-col w-full mt-10">
             <h1 class="mb-5 font-bold text-xl">Grafik Perolehan suara</h1>
             <div class="flex flex-col gap-5 items-center justify-between h-full">
@@ -59,125 +61,127 @@
                 @endforeach
             </div>
         </section>
-    </main>
-@endif
+    @endif
+</main>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const candidates = [
-        {{ $schedule->participants->map(function($v) use($schedule){
-            $votes = isset($schedule->votings[$v['serial_number']['text']]) ? (int)$schedule->votings[$v['serial_number']['text']]['percent'] : 0;
-            return '{' . "name: `{$v['serial_number']['text']}`, votes: {$votes}" . '}';
-        })->join(',') }}
-    ];
+@if ($schedule)
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const candidates = [
+            {{ $schedule->participants->map(function($v) use($schedule){
+                $votes = isset($schedule->votings[$v['serial_number']['text']]) ? (int)$schedule->votings[$v['serial_number']['text']]['percent'] : 0;
+                return '{' . "name: `{$v['serial_number']['text']}`, votes: {$votes}" . '}';
+            })->join(',') }}
+        ];
 
-    const totalVotes = candidates.reduce((sum, candidate) => sum + candidate.votes, 0);
+        const totalVotes = candidates.reduce((sum, candidate) => sum + candidate.votes, 0);
 
-    const candidateData = candidates.map((candidate) => ({
-        name: candidate.name,
-        votes: candidate.votes,
-        percentage: ((candidate.votes / totalVotes) * 100).toFixed(1),
-    }));
+        const candidateData = candidates.map((candidate) => ({
+            name: candidate.name,
+            votes: candidate.votes,
+            percentage: ((candidate.votes / totalVotes) * 100).toFixed(1),
+        }));
 
-    const ctx = document.getElementById("myChart");
-    new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: candidates.map((candidate) => candidate.name),
-            datasets: [{
-                label: "",
-                data: candidates.map((candidate) => candidate.votes),
-                backgroundColor: ["rgba(255, 99, 132)", "rgba(54, 162, 235)", "rgba(75, 192, 192)"],
-                borderColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)", "rgb(75, 192, 192)"],
-                borderWidth: 1,
-                borderRadius: 10,
+        const ctx = document.getElementById("myChart");
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: candidates.map((candidate) => candidate.name),
+                datasets: [{
+                    label: "",
+                    data: candidates.map((candidate) => candidate.votes),
+                    backgroundColor: ["rgba(255, 99, 132)", "rgba(54, 162, 235)", "rgba(75, 192, 192)"],
+                    borderColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)", "rgb(75, 192, 192)"],
+                    borderWidth: 1,
+                    borderRadius: 10,
+                }, ],
+            },
+            plugins: [{
+                afterDraw: (chart, args, options) => {
+                    const {
+                        ctx
+                    } = chart;
+
+                    let xAxis = chart.scales["x"];
+                    let yAxis = chart.scales["y"];
+
+                    if (xAxis && yAxis) {
+                        const totalVotes = chart.data.datasets[0].data.reduce((sum, value) => sum +
+                            value, 0);
+
+                        chart.data.datasets[0].data.forEach((value, index) => {
+                            const percentage = ((value / totalVotes) * 100).toFixed(1);
+
+                            const x = xAxis.getPixelForValue(index);
+                            const y = yAxis.getPixelForValue(value);
+
+                            const initialY = y + 50;
+                            const finalY = y + 20;
+
+                            const animationProgress = chart.animationProgress / 100;
+                            const animatedY = initialY + (finalY - initialY) *
+                            animationProgress;
+
+                            ctx.save();
+                            ctx.textAlign = "center";
+                            ctx.font = "bold 30px 'Open Sans', sans-serif";
+                            ctx.fillStyle = "white";
+
+                            ctx.fillText(`${percentage}%`, x, y + 75);
+
+                            ctx.restore();
+                        });
+                    } else {
+                        console.warn("xAxis atau yAxis tidak ditemukan.");
+                    }
+                },
             }, ],
-        },
-        plugins: [{
-            afterDraw: (chart, args, options) => {
-                const {
-                    ctx
-                } = chart;
+            options: {
+                animation: {
+                    duration: 1000,
+                    easing: "easeOutBounce",
+                },
+                responsive: true,
+                resizeDelay: 0,
+                plugins: {
+                    tooltip: {
+                        enabled: false,
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                const votes = tooltipItem.raw;
+                                const percentage = ((votes / totalVotes) * 100).toFixed(2);
+                                return `${votes} votes (${percentage}%)`;
+                            },
+                        },
+                    },
+                    legend: {
+                        display: false,
+                    },
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false,
+                            drawBorder: false,
+                        },
+                        ticks: {
+                            size: 16,
+                            weight: "bold",
+                        },
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            display: false,
+                        },
 
-                let xAxis = chart.scales["x"];
-                let yAxis = chart.scales["y"];
-
-                if (xAxis && yAxis) {
-                    const totalVotes = chart.data.datasets[0].data.reduce((sum, value) => sum +
-                        value, 0);
-
-                    chart.data.datasets[0].data.forEach((value, index) => {
-                        const percentage = ((value / totalVotes) * 100).toFixed(1);
-
-                        const x = xAxis.getPixelForValue(index);
-                        const y = yAxis.getPixelForValue(value);
-
-                        const initialY = y + 50;
-                        const finalY = y + 20;
-
-                        const animationProgress = chart.animationProgress / 100;
-                        const animatedY = initialY + (finalY - initialY) *
-                        animationProgress;
-
-                        ctx.save();
-                        ctx.textAlign = "center";
-                        ctx.font = "bold 30px 'Open Sans', sans-serif";
-                        ctx.fillStyle = "white";
-
-                        ctx.fillText(`${percentage}%`, x, y + 75);
-
-                        ctx.restore();
-                    });
-                } else {
-                    console.warn("xAxis atau yAxis tidak ditemukan.");
-                }
-            },
-        }, ],
-        options: {
-            animation: {
-                duration: 1000,
-                easing: "easeOutBounce",
-            },
-            responsive: true,
-            resizeDelay: 0,
-            plugins: {
-                tooltip: {
-                    enabled: false,
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            const votes = tooltipItem.raw;
-                            const percentage = ((votes / totalVotes) * 100).toFixed(2);
-                            return `${votes} votes (${percentage}%)`;
+                        drawBorder: false,
+                        ticks: {
+                            display: false,
                         },
                     },
                 },
-                legend: {
-                    display: false,
-                },
             },
-            scales: {
-                x: {
-                    grid: {
-                        display: false,
-                        drawBorder: false,
-                    },
-                    ticks: {
-                        size: 16,
-                        weight: "bold",
-                    },
-                },
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        display: false,
-                    },
-
-                    drawBorder: false,
-                    ticks: {
-                        display: false,
-                    },
-                },
-            },
-        },
-    });
-</script>
+        });
+    </script>
+@endif
