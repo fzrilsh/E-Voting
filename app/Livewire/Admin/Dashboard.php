@@ -31,7 +31,7 @@ class Dashboard extends Component
         $schedule = VoteSchedule::query()->where('start', '<=', $now)->where('end', '>=', $now)->first();
 
         $this->voters = ! $schedule ? 0 : $schedule->votings['vote_in'];
-        $this->schedules = VoteSchedule::all();
+        $this->schedules = VoteSchedule::withTrashed()->get();
         $this->registeredUsers = User::query()->whereHas('profile', function ($query) {
             $query->where('role', 'user');
         })->count();
