@@ -24,7 +24,7 @@
             <span class="text-gray-700 uppercase font-bold tracking-wider mr-auto">E-Voting</span>
         </div>
         <div class="col-span-4 w-full">
-            <div class="grid grid-cols-4 justify-items-center items-center gap-4 mx-auto">
+            <div class="grid grid-cols-3 max-md:grid-col-2 max-sm:grid-cols-1 justify-items-center items-center gap-4 mx-auto">
                 <a href="{{ route('admin.candidates') }}" class="col-span-1 flex flex-col items-center p-2 text-center gap-2 w-full bg-gray-100 py-4 rounded-lg">
                     <div class="flex items-center justify-center p-2 rounded-md h-14 w-14 hover:p-3">
                         <i class="fas fa-user-plus text-carmine-500 fill-carmine-500 text-[30px]"></i>
@@ -37,7 +37,7 @@
                     </div>
                     <p class="font-bold uppercase text-gray-700 text-sm md:text-lg">Nomor Urut kandidat</p>
                 </a>
-                <a href="{{ route('admin.schedules') }}" class="col-span-2 flex flex-col items-center p-2 text-center gap-2 w-full bg-gray-100 py-4 rounded-lg">
+                <a href="{{ route('admin.schedules') }}" class="col-span-1 flex flex-col items-center p-2 text-center gap-2 w-full bg-gray-100 py-4 rounded-lg">
                     <div class="flex items-center justify-center p-2 rounded-md h-14 w-14 hover:p-3">
                         <i class="fas fa-calendar-alt text-carmine-500 fill-carmine-500 text-[30px]"></i>
                     </div>

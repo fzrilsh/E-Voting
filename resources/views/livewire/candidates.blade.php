@@ -24,36 +24,40 @@
                             <p class="text-sm text-gray-500">"{{ $candidates->title }}"</p>
                         </div>
 
-                        <button onclick="showModal('{{ $participant['serial_number']['serial_number'] }}')" class="w-full px-4 py-2 z-30 text-sm text-center cursor-pointer bg-red-telkom hover:bg-red-telkom-hover text-white">Lihat Visi Misi</button>
+                        <button onclick="showModal('{{ $participant['serial_number']['serial_number'] }}')" class="w-full px-4 py-2 z-10 text-sm text-center cursor-pointer bg-red-telkom hover:bg-red-telkom-hover text-white">Lihat Visi Misi</button>
 
-                        <div id="{{ $participant['serial_number']['serial_number'] }}" class="absolute collapse opacity-100 scale-100 z-40 bg-white p-4 rounded-md w-11/12 origin-center top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-y-auto max-h-[90%]" style="box-shadow: 0px 0px 0px 99999px black">
-                            <button onclick="hideModal('{{ $participant['serial_number']['serial_number'] }}')" class="relative z-50 p-1 flex max-w-xs items-center rounded bg-gray-100 text-sm focus:outline-none hover:bg-gray-200">
-                                <svg class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
+                        <div id="{{ $participant['serial_number']['serial_number'] }}" class="fixed flex w-full inset-0 z-50 collapse items-center justify-center">
+                            <div class="fixed inset-0 bg-black backdrop-filter backdrop-blur-sm bg-opacity-80" onclick="hideModal('{{ $participant['serial_number']['serial_number'] }}')"></div>
 
-                            <div class="flex flex-col gap-4 mt-5 rounded-md bg-gray-100 p-8 shadow-lg">
-                                <h1 class="text-2xl font-bold font-inria-sans text-red-telkom leading-tight mb-4">Online Voting System</h1>
-                                <p class="text-gray-800 text-base">
-                                    <span class="text-red-telkom font-bold text-xl mb-2">Nama Pasangan :</span>
-                                    <b>{{ $participant['serial_number']['text'] }}</b> ({{ $participant['serial_number']['candidates']->map(fn($v) => $v['name'])->join(' & ') }})
-                                </p>
-                            </div>
+                            <div class="bg-white p-8 rounded-md z-50 w-11/12 overflow-y-auto max-h-[90%] relative">
+                                <button onclick="hideModal('{{ $participant['serial_number']['serial_number'] }}')" class="relative p-1 flex max-w-xs items-center rounded bg-gray-100 text-sm focus:outline-none hover:bg-gray-200">
+                                    <svg class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
 
-                            <div class="flex flex-col gap-4 mt-5 rounded-md bg-red-telkom p-8 shadow-lg">
-                                <h1 class="block text-white font-bold text-xl uppercase mb-2 border-b pb-2">Visi</h1>
-                                <p class="text-gray-200 text-base">"{{ $participant['vision'] }}"</p>
-                            </div>
+                                <div class="flex flex-col gap-4 mt-5 rounded-md bg-gray-100 p-8 shadow-lg">
+                                    <h1 class="text-2xl font-bold font-inria-sans text-red-telkom leading-tight mb-4">Online Voting System</h1>
+                                    <p class="text-gray-800 text-base">
+                                        <span class="text-red-telkom font-bold text-xl mb-2">Nama Pasangan :</span>
+                                        <b>{{ $participant['serial_number']['text'] }}</b> ({{ $participant['serial_number']['candidates']->map(fn($v) => $v['name'])->join(' & ') }})
+                                    </p>
+                                </div>
 
-                            <div class="flex flex-col gap-4 mt-5 rounded-md bg-red-telkom-hover p-8 shadow-lg">
-                                <div class="mt-4 text-gray-200">
-                                    <h1 class="block text-white font-bold text-xl uppercase mb-2 border-b pb-2">Misi</h1>
-                                    <ol class="list-disc list-inside space-y-2">
-                                        @foreach (explode("\n", $participant['mission']) as $mission)
-                                            <li>{{ $mission }}</li>
-                                        @endforeach
-                                    </ol>
+                                <div class="flex flex-col gap-4 mt-5 bg-red-telkom p-8 rounded-md shadow-lg">
+                                    <h1 class="block text-white font-bold text-xl uppercase mb-2 border-b pb-2">Visi</h1>
+                                    <p class="text-gray-200 text-base">"{{ $participant['vision'] }}"</p>
+                                </div>
+
+                                <div class="flex flex-col gap-4 mt-5 bg-red-telkom-hover p-8 rounded-md shadow-lg">
+                                    <div class="mt-4 text-gray-200">
+                                        <h1 class="block text-white font-bold text-xl uppercase mb-2 border-b pb-2">Misi</h1>
+                                        <ol class="list-disc list-inside space-y-2">
+                                            @foreach (explode("\n", $participant['mission']) as $mission)
+                                                <li>{{ $mission }}</li>
+                                            @endforeach
+                                        </ol>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -67,21 +71,19 @@
 
 @push('scripts')
     <script>
-
-        function showModal(id){
+        function showModal(id) {
             console.log(id)
             let modal = document.getElementById(id);
-            if(!modal) return false
+            if (!modal) return false
 
             modal.classList.remove('collapse')
         }
 
-        function hideModal(id){
+        function hideModal(id) {
             let modal = document.getElementById(id);
-            if(!modal) return false;
+            if (!modal) return false;
 
             modal.classList.add('collapse')
         }
-
     </script>
 @endpush
