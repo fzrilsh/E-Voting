@@ -24,7 +24,7 @@ class Schedule extends Component
 
     public function mount()
     {
-        $this->schedules = VoteSchedule::withTrashed()->get();
+        $this->schedules = VoteSchedule::all();
     }
 
     public function render()
