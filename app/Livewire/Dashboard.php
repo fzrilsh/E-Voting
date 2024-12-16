@@ -15,7 +15,7 @@ class Dashboard extends Component
     public function mount()
     {
         $now = Carbon::now();
-        $this->candidates = VoteSchedule::query()->where('start', '<=', $now)->where('end', '>=', $now)->first()?->setAppends(['candidates']);
+        $this->candidates = VoteSchedule::query()->where('start', '<=', $now)->where('end', '>=', $now)->first();
 
         if (! $this->candidates) {
             // VoteSchedule::all()->map(fn ($v) => $v->delete());

@@ -30,10 +30,10 @@ class Vote extends Component
         $this->schedule = VoteSchedule::query()->where('start', '<=', $now)->where('end', '>=', $now)->first();
 
         if (! $this->schedule) {
-            VoteSchedule::all()->map(fn ($v) => $v->delete());
+            // VoteSchedule::all()->map(fn ($v) => $v->delete());
         }
 
-        $this->hasVote = Auth::user()->Votings()->getQuery()->where('vote_schedule_id', $this->schedule->id)->first();
+        $this->hasVote = Auth::user()->Votings()->getQuery()->where('vote_schedule_id', $this->schedule?->id)->first();
         if ($this->hasVote) {
             $this->choice = $this->hasVote->serial_number_id;
         }
