@@ -55,8 +55,7 @@ class AddCandidate extends Component
         $params['photo'] = $this->photo->storeAs('candidates', $this->name.'.png');
         $this->photo->delete();
 
-        $candidate = Candidate::query()->create($params);
-
-        return $this->flash('success', 'Kandidat berhasil di daftarkan.', [], route('admin.candidates.edit', $candidate));
+        Candidate::query()->create($params);
+        return $this->flash('success', 'Kandidat berhasil di daftarkan.', [], route('admin.candidates'));
     }
 }
