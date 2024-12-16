@@ -14,7 +14,11 @@
         rel="stylesheet" />
 
     @livewireStyles
-    @vite('resources/css/app.css')
+    @if (env('APP_ENV') == 'production')
+        <link rel="stylesheet" href="{{ asset('public/build/assets/app.css') }}">
+    @else
+        @vite('resources/css/app.css')
+    @endif
 </head>
 
 <body>
@@ -27,7 +31,7 @@
         </button>
 
         <p class="flex items-center text-sm font-extrabold text-gray-900 gap-1">
-            <img src="{{ asset('img/logo_univ.png') }}" alt="Logo Telkom University" class="w-20" />
+            <img src="{{ asset('public/img/logo_univ.png') }}" alt="Logo Telkom University" class="w-20" />
         </p>
     </div>
 
@@ -93,9 +97,10 @@
     @stack('scripts')
 
     @livewireScripts
+    <script src="{{ asset('public/build/assets/app2.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('vendor/livewire-alert/livewire-alert.js') }}"></script>
+    <script src="{{ asset('public/vendor/livewire-alert/livewire-alert.js') }}"></script>
     <x-livewire-alert::flash />
 </body>
 

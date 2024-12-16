@@ -15,7 +15,7 @@
                 <label for="photo" class="block mb-2 text-sm font-medium text-gray-500">Foto Kandidat @error('photo') <span class="text-red-500 text-sm">*{{ $message }}</span> @enderror</label>
                 @if ($candidate?->photo)
                     <div class="flex items-center space-x-4 mb-2">
-                        <img src="{{ asset('storage/' . $candidate->photo) }}"
+                        <img src="{{ asset('public/storage/' . $candidate->photo) }}"
                             class="object-contain w-16 h-16 rounded">
                         <span class="text-gray-500">Gambar sudah ada</span>
                     </div>

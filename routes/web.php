@@ -18,6 +18,12 @@ use App\Livewire\QuickCount;
 use App\Livewire\Register;
 use App\Livewire\Vote;
 use Illuminate\Support\Facades\Route;
+use Livewire\Livewire;
+
+Livewire::setUpdateRoute(function ($handle) {
+    $basePath = trim(request()->getBasePath(), '/');
+    return Route::post($basePath . '/livewire/update', $handle);
+});
 
 Route::middleware(['auth', 'web'])->group(function () {
     Route::group(['prefix' => 'admin', 'middleware' => [AdminMiddleware::class]], function () {});

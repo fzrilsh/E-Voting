@@ -14,18 +14,23 @@
         />
 
         @livewireStyles
-        @vite('resources/css/app.css')
+        @if (env('APP_ENV') == 'production')
+            <link rel="stylesheet" href="{{ asset('public/build/assets/app.css') }}">
+        @else
+            @vite('resources/css/app.css')
+        @endif
     </head>
     <body>
         <header class="w-full flex items-center justify-center my-5">
-            <img src="{{ asset('img/logo_univ_verti.png') }}" alt="Logo Telkom University" width="80" height="80" />
+            <img src="{{ asset('public/img/logo_univ_verti.png') }}" alt="Logo Telkom University" width="80" height="80" />
         </header>
 
         {{ $slot }}
 
         @livewireScripts
+        <script src="{{ asset('public/build/assets/app2.js') }}"></script>
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="{{ asset('vendor/livewire-alert/livewire-alert.js') }}"></script> 
+        <script src="{{ asset('public/vendor/livewire-alert/livewire-alert.js') }}"></script> 
         <x-livewire-alert::flash />
     </body>
 </html>

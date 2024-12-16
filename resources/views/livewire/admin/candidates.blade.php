@@ -20,7 +20,7 @@
                 <tr class="bg-white border-b hover:bg-gray-50">
                     <th scope="row" class="px-4 py-4 font-bold text-gray-900 whitespace-nowrap">{{ $index+1 }}</th>
                     <td class="px-4 py-4">{{ $candidate->name }}</td>
-                    <td class="px-4 py-4"><img width="50" height="50" src="{{ asset('storage/' . $candidate->photo) }}" alt="Foto Kandidat"></td>
+                    <td class="px-4 py-4"><img width="50" height="50" src="{{ asset('public/storage/' . $candidate->photo) }}" alt="Foto Kandidat"></td>
                     <td class="px-4 py-4">
                         @if ($candidate->serial_number)
                             {{ str_pad($candidate->serial_number->serial_number, 2, '0', STR_PAD_LEFT) }} {{ $candidate->serial_number->text }}

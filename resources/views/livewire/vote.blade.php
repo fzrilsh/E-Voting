@@ -19,7 +19,7 @@
                         <span class="absolute top-[-10px] left-[-5px] w-10 h-10 rounded-full bg-black text-white font-bold flex items-center justify-center">
                             {{ str_pad($participant['serial_number']['serial_number'], 2, '0', STR_PAD_LEFT) }}
                         </span>
-                        <img src="{{ asset('storage/' . $participant['serial_number']['photo']) }}" alt="Photo Kandidat" class="rounded-t-md w-full h-52 object-cover mb-0" />
+                        <img src="{{ asset('public/storage/' . $participant['serial_number']['photo']) }}" alt="Photo Kandidat" class="rounded-t-md w-full h-52 object-cover mb-0" />
             
                         <div class="flex p-4 flex-col justify-between items-center gap-4 h-52">
                             <div class="flex-1">

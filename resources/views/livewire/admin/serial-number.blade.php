@@ -21,7 +21,7 @@
                     <th scope="row" class="px-4 py-4 font-bold text-gray-900 whitespace-nowrap">{{ $index+1 }}</th>
                     <td class="px-4 py-4">{{ str_pad($number['serial_number'], 2, '0', STR_PAD_LEFT) }}</td>
                     <td class="px-4 py-4">{{ $number['text'] }}</td>
-                    <td class="px-4 py-4"><img width="50" height="50" src="{{ asset('storage/' . $number['photo']) }}" alt="Photos"></td>
+                    <td class="px-4 py-4"><img width="50" height="50" src="{{ asset('public/storage/' . $number['photo']) }}" alt="Photos"></td>
                     <td class="px-4 py-4 text-right flex flex-col">
                         <a href="{{ route('admin.serial-numbers.edit', $number) }}" class="cursor-pointer font-medium text-blue-600 hover:text-blue-800">Edit</a>
                         <a wire:click="destroy({{ $number->id }})" class="cursor-pointer font-medium text-red-600 hover:text-red-800">Remove</a>

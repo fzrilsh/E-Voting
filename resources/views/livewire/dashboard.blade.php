@@ -6,7 +6,7 @@
             <p class="text-base text-gray-700 leading-relaxed">Aplikasi E-Voting Pemilu Lembaga Organisasi Mahasiswa Telkom University berbasis website, memberikan kemudahan dan transparansi dalam proses pemilihan.</p>
         </div>
         <div class="flex flex-1 flex-col items-end justify-center">
-            <img src="/img/voting.svg" alt="Voting IMG" class="w-[400px] h-[400px]" />
+            <img src="{{ asset('public/img/voting.svg') }}" alt="Voting IMG" class="w-[400px] h-[400px]" />
         </div>
     </section>
 

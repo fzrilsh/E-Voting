@@ -14,7 +14,11 @@
         rel="stylesheet" />
 
     @livewireStyles
-    @vite('resources/css/app.css')
+    @if (env('APP_ENV') == 'production')
+        <link rel="stylesheet" href="{{ asset('public/build/assets/app.css') }}">
+    @else
+        @vite('resources/css/app.css')
+    @endif
 </head>
 
 <body>
@@ -24,7 +28,7 @@
                 <div class="flex lg:flex-1">
                     <a href="{{ route('dashboard') }}">
                         <span class="sr-only">Telkom University</span>
-                        <img class=" h-14" src="{{ asset('img/logo_univ.png') }}" alt="Logo Telkom University" />
+                        <img class=" h-14" src="{{ asset('public/img/logo_univ.png') }}" alt="Logo Telkom University" />
                     </a>
                 </div>
 
@@ -175,7 +179,7 @@
     <footer
         class="mt-10 grid max-sm:grid-cols-2 max-sm:grid-flow-dense w-full place-items-start gap-4 grid-flow-col bg-gray-100 text-base-content mx-auto py-10 max-w-7xl px-4 max-sm:px-10 lg:px-8">
         <aside class="grid place-items-start gap-4">
-            <img src="/img/logo_univ_verti.png" alt="Logo Telkom University" width="80" height="80" />
+            <img src="{{ asset('public/img/logo_univ_verti.png') }}" alt="Logo Telkom University" width="80" height="80" />
             <nav>
                 <h6 class="mb-2 font-bold uppercase text-red-telkom">Social</h6>
                 <div class="grid grid-flow-col gap-4">
@@ -231,8 +235,9 @@
     @stack('scripts')
 
     @livewireScripts
+    <script src="{{ asset('public/build/assets/app2.js') }}"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('vendor/livewire-alert/livewire-alert.js') }}"></script>
+    <script src="{{ asset('public/vendor/livewire-alert/livewire-alert.js') }}"></script>
     <x-livewire-alert::flash />
 </body>
 
