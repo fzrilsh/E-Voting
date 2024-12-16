@@ -10,7 +10,7 @@ class VoteSchedule extends Model
 {
     use SoftDeletes;
 
-    public $timestamps = true;
+    public $timestamps = false;
 
     protected $fillable = [
         'title',
@@ -26,6 +26,8 @@ class VoteSchedule extends Model
     {
         return [
             'candidates_ids' => 'array',
+            'start' => 'date',
+            'end' => 'date',
         ];
     }
 

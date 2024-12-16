@@ -27,6 +27,18 @@ class Login extends Component
         return view('livewire.login');
     }
 
+    protected function messages()
+    {
+        return [
+            'nim.required' => 'NIM harus diisi.',
+            'nim.numeric' => 'NIM harus berupa angka.',
+            'nim.digits' => 'NIM harus memiliki 10 digit angka.',
+            'password.required' => 'Password harus diisi.',
+            'password.string' => 'Password harus berupa string.',
+            'password.min' => 'Password harus lebih dari 8 karakter',
+        ];
+    }
+
     public function togglePasswordVisibility()
     {
         $this->isPasswordVisible = ! $this->isPasswordVisible;

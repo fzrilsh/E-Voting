@@ -20,15 +20,22 @@ class Vote extends Component
     #[Rule('required|exists:serial_numbers,id')]
     public $choice;
 
-    public $candidates;
+    public $schedule;
+
+    public $hasVote;
 
     public function mount()
     {
         $now = Carbon::now();
-        $this->candidates = VoteSchedule::query()->where('start', '<=', $now)->where('end', '>=', $now)->first()?->setAppends(['candidates']);
+        $this->schedule = VoteSchedule::query()->where('start', '<=', $now)->where('end', '>=', $now)->first();
 
-        if (! $this->candidates) {
+        if (! $this->schedule) {
             VoteSchedule::all()->map(fn ($v) => $v->delete());
+        }
+
+        $this->hasVote = Auth::user()->Votings()->getQuery()->where('vote_schedule_id', $this->schedule->id)->first();
+        if ($this->hasVote) {
+            $this->choice = $this->hasVote->serial_number_id;
         }
     }
 
@@ -44,12 +51,12 @@ class Vote extends Component
         $user = User::query()->find(Auth::user()->id);
         $serial = SerialNumber::query()->find($this->choice);
 
-        if ($user->Votings()->getQuery()->where('vote_schedule_id', $this->candidates->id)->first()) {
-            return $this->flash('danger', 'Gagal, kamu sudah pernah voting!', [], '/');
+        if ($user->Votings()->getQuery()->where('vote_schedule_id', $this->schedule->id)->first()) {
+            return $this->flash('warning', 'Gagal, kamu sudah pernah voting!', [], route('quick-count'));
         }
 
         $user->Votings()->create([
-            'vote_schedule_id' => $this->candidates->id,
+            'vote_schedule_id' => $this->schedule->id,
             'serial_number_id' => $this->choice,
             'user_id' => $user->id,
         ]);

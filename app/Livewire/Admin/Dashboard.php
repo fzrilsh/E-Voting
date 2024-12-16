@@ -17,12 +17,42 @@ class Dashboard extends Component
 
     public int $voters;
 
-    public function mount(){
+    public $schedules;
+
+    public $selectedSchedule;
+
+    public $voteLabels = [];
+
+    public $voteData = [];
+
+    public function mount()
+    {
         $now = Carbon::now();
         $schedule = VoteSchedule::query()->where('start', '<=', $now)->where('end', '>=', $now)->first();
 
-        $this->registeredUsers = User::all()->count();
-        $this->voters = !$schedule ? 0 : $schedule->votings['vote_in'];
+        $this->voters = ! $schedule ? 0 : $schedule->votings['vote_in'];
+        $this->schedules = VoteSchedule::all();
+        $this->registeredUsers = User::query()->whereHas('profile', function ($query) {
+            $query->where('role', 'user');
+        })->count();
+    }
+
+    public function updatedSelectedSchedule($scheduleId)
+    {
+        $schedule = VoteSchedule::query()->find($scheduleId);
+        if ($schedule) {
+            $this->voteLabels = $schedule->participants->pluck('serial_number.text')->toArray();
+            $this->voteData = collect($this->voteLabels)->map(function ($v) use ($schedule) {
+                $votes = isset($schedule->votings[$v]) ? (int) $schedule->votings[$v]['count'] : 0;
+
+                return $votes;
+            })->toArray();
+        } else {
+            $this->voteLabels = [''];
+            $this->voteData = [0];
+        }
+
+        $this->dispatch('updateChart', $this->voteLabels, $this->voteData);
     }
 
     public function render()

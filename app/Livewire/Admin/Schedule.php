@@ -19,10 +19,11 @@ class Schedule extends Component
     public $deletedSchedule;
 
     protected $listeners = [
-        'confirmed'
+        'confirmed',
     ];
 
-    public function mount(){
+    public function mount()
+    {
         $this->schedules = VoteSchedule::all();
     }
 
@@ -31,15 +32,19 @@ class Schedule extends Component
         return view('livewire.admin.schedule');
     }
 
-    public function destroy(VoteSchedule $schedule){
+    public function destroy(VoteSchedule $schedule)
+    {
         $this->deletedSchedule = $schedule;
 
         $this->confirm('Delete schedule?', [
-            'onConfirmed' => "confirmed"
+            'onConfirmed' => 'confirmed',
         ]);
     }
 
-    public function confirmed(){
+    public function confirmed()
+    {
         $this->deletedSchedule->delete();
+
+        return redirect()->route('admin.schedules');
     }
 }

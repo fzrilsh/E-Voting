@@ -18,7 +18,7 @@ class Dashboard extends Component
         $this->candidates = VoteSchedule::query()->where('start', '<=', $now)->where('end', '>=', $now)->first()?->setAppends(['candidates']);
 
         if (! $this->candidates) {
-            VoteSchedule::all()->map(fn ($v) => $v->delete());
+            // VoteSchedule::all()->map(fn ($v) => $v->delete());
         }
     }
 

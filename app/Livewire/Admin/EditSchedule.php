@@ -10,9 +10,9 @@ use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Title('Add Schedule')]
+#[Title('Edit Schedule')]
 #[Layout('components.layouts.admin')]
-class AddSchedule extends Component
+class EditSchedule extends Component
 {
     use LivewireAlert;
 
@@ -30,6 +30,19 @@ class AddSchedule extends Component
 
     #[Rule('required|date|after:start')]
     public $end;
+
+    public VoteSchedule $schedule;
+
+    public function mount(VoteSchedule $schedule)
+    {
+        $this->schedule = $schedule;
+
+        $this->title = $schedule->title;
+        $this->description = $schedule->description;
+        $this->candidates_ids = $schedule->candidates_ids;
+        $this->start = $schedule->start->format('Y-m-d');
+        $this->end = $schedule->end->format('Y-m-d');
+    }
 
     protected function messages()
     {
@@ -55,32 +68,35 @@ class AddSchedule extends Component
 
     public function render()
     {
-        return view('livewire.admin.add-schedule', $this->with());
+        return view('livewire.admin.edit-schedule', $this->with());
     }
 
     public function submit()
     {
         $params = $this->validate();
 
-        $overlapped = VoteSchedule::query()->where(function ($query) use ($params) {
-            $query->where(function ($query) use ($params) {
-                $query->where('start', '<=', $params['start'])
-                    ->where('end', '>=', $params['start']);
-            })->orWhere(function ($query) use ($params) {
-                $query->where('start', '<=', $params['end'])
-                    ->where('end', '>=', $params['end']);
-            })->orWhere(function ($query) use ($params) {
-                $query->where('start', '>=', $params['start'])
-                    ->where('end', '<=', $params['end']);
-            });
-        })->exists();
+        $overlapped = false;
+        if ($this->schedule->start !== $this->start || $this->schedule->end !== $this->end) {
+            $overlapped = VoteSchedule::query()->where(function ($query) use ($params) {
+                $query->where(function ($query) use ($params) {
+                    $query->where('start', '<=', $params['start'])
+                        ->where('end', '>=', $params['start']);
+                })->orWhere(function ($query) use ($params) {
+                    $query->where('start', '<=', $params['end'])
+                        ->where('end', '>=', $params['end']);
+                })->orWhere(function ($query) use ($params) {
+                    $query->where('start', '>=', $params['start'])
+                        ->where('end', '<=', $params['end']);
+                });
+            })->first();
+        }
 
-        if ($overlapped) {
+        if ($overlapped && $this->schedule->id !== $overlapped->id) {
             return $this->addError('error', 'Jadwal bentrok dengan jadwal lain yang sudah ada');
         }
 
-        VoteSchedule::query()->create($params);
+        $this->schedule->update($params);
 
-        return $this->flash('success', 'Jadwal berhasil dibuat.', [], route('admin.schedules'));
+        return $this->alert('success', 'Jadwal berhasil di simpan.');
     }
 }

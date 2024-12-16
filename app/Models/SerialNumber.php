@@ -12,6 +12,7 @@ class SerialNumber extends Model
 
     protected $fillable = [
         'serial_number',
+        'photo',
         'text',
     ];
 
