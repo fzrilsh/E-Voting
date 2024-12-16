@@ -30,7 +30,7 @@
                     <td class="px-4 py-4">{{ $schedule->start }}</td>
                     <td class="px-4 py-4">{{ $schedule->end }}</td>
                     <td class="px-4 py-4 text-right flex flex-col">
-                        <a href="" class="cursor-pointer font-medium text-blue-600 hover:text-blue-800">Edit</a>
+                        <a href="{{ route('admin.schedules.edit', $schedule) }}" class="cursor-pointer font-medium text-blue-600 hover:text-blue-800">Edit</a>
                         <a wire:click="destroy({{ $schedule->id }})" class="cursor-pointer font-medium text-red-600 hover:text-red-800">Remove</a>
                     </td>
                 </tr>

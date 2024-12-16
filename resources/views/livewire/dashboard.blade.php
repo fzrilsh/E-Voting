@@ -29,7 +29,7 @@
 
     <section class="px-5 sm:px-6 lg:px-8 mx-auto max-w-7xl flex flex-col w-full mt-10">
         <div class="grid grid-cols-3 max-sm:grid-cols-1 gap-5 w-full">
-            <a href="" class="bg-gray-100 rounded-md flex flex-col items-start p-5 justify-center overflow-hidden shadow-md">
+            <a href="{{ route('vote') }}" class="bg-gray-100 rounded-md flex flex-col items-start p-5 justify-center overflow-hidden shadow-md">
                 <div class="flex items-center justify-center bg-blue-700 p-3 rounded-md">
                     <svg class="h-8 w-8 text-white" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path

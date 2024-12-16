@@ -11,7 +11,7 @@
         <div class="grid grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-1 gap-5 w-full mb-5">
             @foreach ($candidates->participants as $participant)
                 <div class="bg-gray-100 rounded-md flex flex-col items-center justify-center overflow-hidden shadow-md">
-                    <img src="{{ $participant['serial_number']['photo'] }}" alt="Photo Kandidat" class="rounded-t-md w-full h-52 object-cover mb-0" />
+                    <img src="{{ asset('storage/' . $participant['serial_number']['photo']) }}" alt="Photo Kandidat" class="rounded-t-md w-full h-52 object-cover mb-0" />
 
                     <div class="p-5 flex flex-col items-center justify-center">
                         <p class="text-lg font-bold">{{ $participant['serial_number']['text'] }}</p>

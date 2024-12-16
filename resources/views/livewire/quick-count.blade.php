@@ -1,5 +1,5 @@
 @if (!$schedule)
-    oiewjfojowefj
+    
 @else
     <main class="mt-20 max-sm:mt-10 w-full">
         <section class="bg-gray-100 flex px-2 py-10 flex-col items-center w-full">
